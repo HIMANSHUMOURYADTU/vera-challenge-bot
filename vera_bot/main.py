@@ -47,8 +47,13 @@ async def tick(request: Request):
     triggers = data.get("available_triggers", [])
     
     responses = []
-    for trigger in triggers:
+    for trigger_id in triggers:
         try:
+            # The judge passes a list of string IDs, we must retrieve the trigger payload object from the store
+            trigger = store.get_trigger_context(trigger_id)
+            if not trigger:
+                continue
+                
             merchant_id = trigger.get("payload", {}).get("merchant_id")
             customer_id = trigger.get("payload", {}).get("customer_id")
             category_slug = trigger.get("payload", {}).get("category")

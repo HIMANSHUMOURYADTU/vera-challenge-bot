@@ -1,8 +1,11 @@
 import os
 from dotenv import load_dotenv
 
-# Load env variables BEFORE any other imports!
-load_dotenv()
+# Try to load .env, but safely ignore decoding crashes if they happen on cloud engines!
+try:
+    load_dotenv(override=False)
+except Exception:
+    pass
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
